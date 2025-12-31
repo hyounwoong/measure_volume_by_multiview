@@ -1,0 +1,76 @@
+# GPU 서버 사용 가이드
+
+# 1. 문서 개요
+
+AI Stages는 머신러닝/AI 모델 학습을 위한 최적의 GPU 학습 서버 환경을 제공합니다.
+
+
+# 2. GPU 서버
+
+**서버 사용시 일반적인 주의사항**
+
+
+⚠️ GPU 서버는 머신러닝 개발을 위한 VM이 아니라 머신러닝 학습을 위해 최적화된 Docker 환경입니다. 학습과 관련이 없는 시스템 변경은 할 수 없도록 보호되고 있습니다.
+
+
+
+
+⚠️ AI Stages는 안정적인 시스템 운영을 위해서 Docker 환경에서 동작하기 때문에 Docker 설치와 사용이 불가합니다.
+
+
+⚠️ Nvidia, CUDA 관련 드라이버와 패키지는 사전에 설치되어 있습니다. 다시 설치할 필요 없고 설치할 경우 정상 동작을 보장할 수 없습니다. (pytorch/pytorch:2.1.0-cuda11.8-cudnn8-runtime 이미지를 기반으로 제작되어 있습니다)
+
+
+
+
+## 2.4 **가상환경 세팅 (서버 내)**
+
+<aside>
+⚠️ **주의:** 아래 명령어와 경로는 예시이나 **부스트캠프 AI Tech** **교육 한정해서는** GPU 서버 접속 직후에는 루트 디스크 용량이 부족하므로, 반드시 `/data/ephemeral/home` 경로 아래에 가상환경(venv)을 만들어 진행합니다. (해당 경로에는 50GB 디스크 용량이 제공됩니다)
+용량을 초과하여 사용하게 될 경우 시스템 안정성을 위해 서버가 강제 종료되며 내부 작업 파일은 모두 소실되며 복원은 불가합니다. 상시 자료는 백업하며 용량은 터미널에서 아래 명령어를 통해 확인할 수 있습니다. **`df -H`**
+
+</aside>
+
+아래 과정을 통해 개인별 Python 실행 환경을 분리하고 필요한 패키지를 설치할 수 있습니다.
+
+### 1) 가상환경 생성
+
+```bash
+python3.10 -m venv /data/ephemeral/home/py310
+```
+
+### 2) 가상환경 활성화
+
+```bash
+source /data/ephemeral/home/py310/bin/activate
+```
+
+> 참고: 활성화 후 (py310) 표시가 프롬프트에 보이면 정상 진입 상태입니다.
+> 
+
+
+### 3) 필수 패키지 설치
+
+```bash
+pip install --upgrade pip
+pip install jupyter ipykernel
+# requirements.txt 파일이 제공된 경우
+pip install -r [경로]/requirements.txt --no-build-isolation
+```
+
+### **3) Python 인터프리터를 가상환경으로 지정**
+
+1. `Cmd/Ctrl + Shift + P` → **Python: Select Interpreter**
+2. 목록에서 `/data/ephemeral/home/py310/bin/python` 선택 (필요 시 VS Code가 ipykernel 설치를 제안하면 Install)
+
+### **4) Jupyter 열기 & 커널 선택**
+
+- 기존 `.ipynb` 파일을 열거나 `Cmd/Ctrl + Shift + P` → **Jupyter: Create New Blank Notebook**
+- 우측 상단 Select Kernel → Python Environments 탭에서
+    
+    `/data/ephemeral/home/py310/bin/python`(= “Python (py310)”) 선택
+    
+
+> 참고: 별도 브라우저/토큰/포트포워딩 없음. VS Code가 원격 Jupyter를 자동 관리합니다.
+>
+
