@@ -344,7 +344,7 @@ print(f"  이미지 파일 수: {len(matched_image_files)}")
 # ============================================
 # DA3 추론
 # ============================================
-model = DepthAnything3.from_pretrained("depth-anything/da3-giant").to("cuda")
+model = DepthAnything3.from_pretrained("depth-anything/da3nested-giant-large").to("cuda")
 
 
 
