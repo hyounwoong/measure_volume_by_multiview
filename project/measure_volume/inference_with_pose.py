@@ -8,7 +8,7 @@ import os
 import re
 
 # 폴더 경로 설정
-base_folder = "/data/ephemeral/home/project/ar_folder"
+base_folder = "../ar_folder"
 session_folders = sorted(glob.glob(os.path.join(base_folder, "session_*")))
 if not session_folders:
     raise FileNotFoundError(f"세션 폴더를 찾을 수 없습니다: {os.path.join(base_folder, 'session_*')}")
